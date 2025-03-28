@@ -1,0 +1,55 @@
+.sidebar .nav{
+  padding:  0px !important;
+
+}
+
+.sidebar ul li a:hover{
+  background-color: blue;
+}
+
+/* Default: Show desktop sidebar, hide mobile sidebar */
+.sidebar-container {
+  display: block;
+}
+
+.sidebarMbl {
+  display: none;
+}
+
+/* Mobile View: Hide desktop sidebar, show mobile sidebar */
+@media screen and (max-width: 768px) {
+  .sidebar-container {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+    position: fixed;
+    top: 20px;
+    margin-left: 180px;
+    z-index: 1000;
+    background-color: #212529;
+    color: white;
+    padding-right: 7px;
+  }
+
+  .sidebarMbl {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15rem;
+    height: 100vh;
+    background-color: #343a40;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebarMbl.show {
+    display: block;
+    transform: translateX(0);
+  }
+}
+
+
+
