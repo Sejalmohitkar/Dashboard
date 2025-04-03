@@ -1,0 +1,12 @@
+.searchBar {
+    display: block;
+}
+
+@media screen and (max-width: 425px) {
+    .searchBar {
+        display: none !important;
+    }
+    .rightSec{
+        margin-left: 100px;
+    }
+}

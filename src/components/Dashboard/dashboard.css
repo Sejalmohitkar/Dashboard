@@ -1,0 +1,26 @@
+
+@media screen and (max-width: 425px) {
+    .cards{
+       width: 90%;
+       justify-content: center;
+       text-align: center;
+       margin: 5px;
+    }
+    .main-card{
+        margin: 10px;
+    }
+    .chart1{
+        width: 90%;
+       margin: 15px;
+    }
+    .piechart1{
+        width: 90%;
+        margin-left: 12px;
+    }
+
+    /* //user// */
+
+    .container {
+        width: 90%;
+    }
+}
