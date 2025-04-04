@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   Card,
   Row,
@@ -9,31 +8,40 @@ import {
   FormControl,
   Dropdown,
 } from "react-bootstrap";
-import { FaCommentDots, FaHeart, FaShareAlt } from "react-icons/fa";
-import axios from "axios";
+import { FaCommentDots } from "react-icons/fa";
+// import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { getCards } from "../../store/cards/CardsThunk";
 
 function Cards() {
-  const [blog, setBlog] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [blog, setBlog] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios
-      .get("https://dummyjson.com/posts")
-      .then((response) => {
-        setBlog(response.data.posts);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("https://dummyjson.com/posts")
+  //     .then((response) => {
+  //       setBlog(response.data.posts);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const dispatch = useDispatch();
+  const{cards, loading, error} = useSelector((state) => state.card);
+ 
+   useEffect(() => {
+     dispatch(getCards());
+   }, [dispatch]);
 
   return (
     <div>
@@ -44,6 +52,9 @@ function Cards() {
           <Button variant="dark" onClick={handleShow}>
             + New post
           </Button>
+
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error}</p>}
 
           <Modal
             show={show}
@@ -111,7 +122,7 @@ function Cards() {
         </div>
 
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
-          {blog.map((post, idx) => (
+          {cards.map((card, idx) => (
             <Col key={idx}>
               <Card className="border-0 shadow-sm h-100 rounded-4 text-white overflow-hidden">
                 <div style={{ position: "relative" }}>
@@ -140,7 +151,7 @@ function Cards() {
                       padding: "20px",
                     }}
                   >
-                    <Card.Title className="h6 fw-bold">{post.title}</Card.Title>
+                    <Card.Title className="h6 fw-bold">{card.title}</Card.Title>
                   </Card.Body>
                 </div>
               </Card>
