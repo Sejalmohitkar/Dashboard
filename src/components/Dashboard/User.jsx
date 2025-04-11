@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Form from "react-bootstrap/Form";
 import { FormControl, Card, Pagination } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
@@ -8,15 +7,14 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../store/user/UserThunk";
 
-
 function User() {
-  // const [users, setUsers] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  //pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(8);
+  const [postPerPage] = useState(6);
 
+  //redux toolkit
   const dispatch = useDispatch();
-  const { users = [], loading, error } = useSelector((state) => state.user);
+  const { users, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getUser());
@@ -35,6 +33,7 @@ function User() {
   //     });
   // }, []);
 
+  //pagination
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
   const currentPosts = users.slice(firstPostIndex, lastPostIndex);
@@ -47,6 +46,7 @@ function User() {
         <h4>Users</h4>
         <button className="btn btn-dark mt-2 mt-md-0">+ New User</button>
       </div>
+
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 

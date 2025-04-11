@@ -1,14 +1,17 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState} from "react";
 import { ShoppingCart } from "lucide-react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Badge from "react-bootstrap/Badge";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../store/product/ProductThunk";
 // import axios from "axios";
+import { Pagination } from "react-bootstrap";
 
 function Product() {
 
-  // const [products, SetProducts] = useState([]);
+   //pagination//
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage] = useState(4);
 
   const dispatch = useDispatch();
   const{products, loading, error} = useSelector((state) => state.product);
@@ -31,6 +34,13 @@ function Product() {
   //   loadData();
   // }, []);
 
+   //pagination
+   const lastPostIndex = currentPage * postPerPage;
+   const firstPostIndex = lastPostIndex - postPerPage;
+   const currentPosts = products.slice(firstPostIndex, lastPostIndex);
+   const totalPages = Math.ceil(products.length / postPerPage);
+   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <div className="">
@@ -44,7 +54,7 @@ function Product() {
 
             <Container className="mt-3">
               <Row xs={1} md={2} lg={4} className="g-4">
-                {products.map((product) => (
+                {currentPosts.map((product) => (
                   <Col md={4} key={product.id}>
                     <Card className="shadow-lg border-0 rounded-4" style={{width:"270px", height:"420px"}}>
                       <div className="position-relative">
@@ -87,6 +97,36 @@ function Product() {
               </Row>
             </Container>
           </div>
+          {/* Pagination */}
+                  <div className="d-flex justify-content-end mt-3">
+                    <Pagination>
+                      <Pagination.First
+                        onClick={() => paginate(1)}
+                        disabled={currentPage === 1}
+                      />
+                      <Pagination.Prev
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      />
+                      {Array.from({ length: totalPages }, (_, index) => (
+                        <Pagination.Item
+                          key={index + 1}
+                          active={index + 1 === currentPage}
+                          onClick={() => paginate(index + 1)}
+                        >
+                          {index + 1}
+                        </Pagination.Item>
+                      ))}
+                      <Pagination.Next
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      />
+                      <Pagination.Last
+                        onClick={() => paginate(totalPages)}
+                        disabled={currentPage === totalPages}
+                      />
+                    </Pagination>
+                  </div>
         </div>
       </div>
   

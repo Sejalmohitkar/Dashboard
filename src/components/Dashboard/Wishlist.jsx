@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { Badge, Dropdown, Button } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 // import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { getWishlist } from "../../store/wishlist/WishlistThunk";
+import { Pagination } from "react-bootstrap";
 
 function Wishlist() {
+
+  //pagination//
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage] = useState(10);
+  
+  //redux toolkit
   const dispatch = useDispatch();
   const { wishlist, loading, error } = useSelector((state) => state.wishlist);
 
@@ -18,6 +25,14 @@ function Wishlist() {
     Dispatch: "info",
     Completed: "success",
   };
+
+  
+  //pagination
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPosts = wishlist.slice(firstPostIndex, lastPostIndex);
+  const totalPages = Math.ceil(wishlist.length / postPerPage);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -40,7 +55,7 @@ function Wishlist() {
               </tr>
             </thead>
             <tbody>
-              {wishlist.map((item, index) => (
+              {currentPosts.map((item, index) => (
                 <tr key={index} className={item.highlight ? "text-dark" : ""}>
                   <td>{item.image}</td>
                   <td>
@@ -58,6 +73,37 @@ function Wishlist() {
               ))}
             </tbody>
           </Table>
+        </div>
+
+        {/* Pagination */}
+        <div className="d-flex justify-content-end mt-3">
+          <Pagination>
+            <Pagination.First
+              onClick={() => paginate(1)}
+              disabled={currentPage === 1}
+            />
+            <Pagination.Prev
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+            {Array.from({ length: totalPages }, (_, index) => (
+              <Pagination.Item
+                key={index + 1}
+                active={index + 1 === currentPage}
+                onClick={() => paginate(index + 1)}
+              >
+                {index + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            />
+            <Pagination.Last
+              onClick={() => paginate(totalPages)}
+              disabled={currentPage === totalPages}
+            />
+          </Pagination>
         </div>
       </div>
     </div>

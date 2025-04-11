@@ -17,7 +17,7 @@ function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="sidebar-container">
+      <div className="fixed sidebar-container">
         <div className="sidebar d-flex flex-column justify-content-between bg-dark text-white p-4 vh-100">
           <div>
             <div className="d-flex align-items-center text-white text-decoration-none">
